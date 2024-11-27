@@ -4,8 +4,8 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 
 /**
- * Trees intended to be used in storing mappings between fixed-length 
- * sequences of bits and corresponding values.
+ * Trees intended to be used in storing mappings between fixed-length sequences of bits and
+ * corresponding values.
  *
  * @author Your Name Here
  */
@@ -14,50 +14,133 @@ public class BitTree {
   // | Fields |
   // +--------+
 
+  /** The root node of the tree. */
+  BitTreeNode root;
+
+  /** The height of the tree. */
+  int height;
+
+  /** The number of set leaves in the tree. */
+  int size;
+
+  /** A spot to store values. */
+  String cache;
+
   // +--------------+------------------------------------------------
   // | Constructors |
   // +--------------+
 
   /**
+   * Constructs a new bit tree of a specified height without creating any nodes.
    *
+   * @param n the height of the tree
    */
   public BitTree(int n) {
+    this.root = new BitTreeBranch();
+    this.height = n;
+    this.size = 0;
+    this.cache = null;
   } // BitTree(int)
 
   // +---------------+-----------------------------------------------
   // | Local helpers |
   // +---------------+
 
+  /**
+   * Recurses over the tree to set the value at the correct spot.
+   *
+   * @param node the node to start at
+   * @param bits the path to follow
+   * @param value the value to set
+   * @return the node that was set
+   */
+  public BitTreeNode helperSet(BitTreeNode node, String bits, String value) {
+    if (node instanceof BitTreeLeaf) {
+      node.setVal(value);
+      size++;
+    } else {
+      if (bits.charAt(0) == 0) {
+        node.setLeft(helperSet(node.getLeft(), bits.substring(1), value));
+      } else if (bits.charAt(0) == 1) {
+        node.setRight(helperSet(node.getRight(), bits.substring(1), value));
+      } // if
+    } // if
+    return node;
+  } // helperSet(BitTreeNode, String, String)
+
+  /**
+   * Recurses over the tree to get the value at the correct spot.
+   *
+   * @param node the node to start at
+   * @param bits the path to follow
+   * @return the value that was found
+   */
+  public String helperGet(BitTreeNode node, String bits) {
+    if (node instanceof BitTreeLeaf) {
+      return node.getVal();
+    } else {
+      if (bits.charAt(0) == 0) {
+        helperGet(node.getLeft(), bits.substring(1));
+      } else if (bits.charAt(0) == 1) {
+        helperGet(node.getRight(), bits.substring(1));
+      } // if
+    } // if
+    return node.getVal();
+  } // helperSet(BitTreeNode, String, String)
+
   // +---------+-----------------------------------------------------
   // | Methods |
   // +---------+
 
   /**
+   * Sets the node reached by following the provided bits to the provided value.
    *
+   * @param bits the bit path to follow
+   * @param value the value to set at the node found
    */
-  public void set(String bits, String value) {
-    // STUB
+  public void set(String bits, String value) throws Exception {
+    if (bits.length() == 6 || bits.matches("[01]+")) {
+      // if bits is appropriate length and has only 0 and 1 characters
+      this.root = helperSet(this.root, bits, value);
+    } else {
+      throw new Exception("Invalid bit string.");
+    } // if
   } // set(String, String)
 
   /**
+   * Retrieves the value at the node reached by following the specified bit path.
    *
+   * @param bits the bit path to follow
+   * @return the value at the found node, as a string
    */
-  public String get(String bits) {
-    return "";  // STUB
+  public String get(String bits) throws Exception {
+    if (bits.length() == 6 || bits.matches("[01]+")) {
+      // if bits is appropriate length and has only 0 and 1 characters
+      return helperGet(this.root, bits);
+    } else {
+      throw new Exception("Invalid bit string.");
+    } // if
   } // get(String, String)
 
   /**
+   * Prints all existing leaves of the tree in the following format: 'bitpath,value'
    *
+   * @param pen to write with
    */
   public void dump(PrintWriter pen) {
-    // STUB
+    // how to keep track of what bit string was used to get to this node?
+    // only print leaves
   } // dump(PrintWriter)
 
   /**
+   * Fills in the tree using a table of specified bit paths and values.
    *
+   * @param source the table of paths and values
    */
   public void load(InputStream source) {
-    // STUB
+    // parse one line from source
+    // split line at comma
+    // pass first half (bits) as bits and second half (value) as value
   } // load(InputStream)
 
 } // class BitTree
