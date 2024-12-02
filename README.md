@@ -12,6 +12,7 @@ A mini-project exploring bit trees (a form of binary tree) and their use in tran
 * 11/26/24 How to check my string only has 0 and 1 (https://stackoverflow.com/questions/28227301/in-java-how-do-i-check-if-a-string-contains-only-1-or-0)
 * 11/26/24 Evening tutors: Avaash and Ishita
 * 11/26/24 How to recurse over trees, lab-bsts-maven, partner Leo
+* 12/1/24  Evening tutors: Ethan
 *
 
 **Instructions for use**
@@ -27,7 +28,8 @@ This code may be found at <https://github.com/lblancha528/mp-bit-trees-maven>. T
 
 **Work Log**
 * 11/26/24      7:15-8:45pm     1.5hrs
+* 12/01/24      7:15-
 
 **To Do**
-* Implement dump() and load() in BitTree
 * Implement BrailleAsciiTables
+* Do something with try/catches

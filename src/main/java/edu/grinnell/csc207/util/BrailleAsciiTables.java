@@ -1,6 +1,8 @@
 package edu.grinnell.csc207.util;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.IOException;
 
@@ -67,19 +69,35 @@ public class BrailleAsciiTables {
    * A 7/ 8 deep tree whose branches represent a bit string of an ASCII character and whose leaves
    * are a bit string of the corresponding Braille symbol.
    */
-  static BitTree a2bTree = null;
+  static BitTree a2bTree = new BitTree(7);
+
+  /**
+   * The file version of a2b.
+   */
+  static File a2bFile = new File("src/main/java/edu/grinnell/csc207/util/a2bFile.txt");
 
   /**
    * A 6 deep tree whose branches represent a bit string Braille symbol and whole leaves are an
    * ASCII character.
    */
-  static BitTree b2aTree = null;
+  static BitTree b2aTree = new BitTree(6);
+
+  /**
+   * The file version of b2a.
+   */
+  static File b2aFile = new File("src/main/java/edu/grinnell/csc207/util/b2aFile.txt");
 
   /**
    * A 6 deep tree whose branches represent a bit string Braille symbol and wholse leaves are the
    * corresponding Unicode symbol.
    */
-  static BitTree b2uTree = null;
+  static BitTree b2uTree = new BitTree(6);
+
+  /**
+   * The file version of b2u.
+   */
+  static File b2uFile = new File("src/main/java/edu/grinnell/csc207/util/b2uFile.txt");
+
 
   // +-----------------------+---------------------------------------
   // | Static helper methods |
@@ -96,14 +114,23 @@ public class BrailleAsciiTables {
    * @return a bit string representation of the corresponding Braille character
    */
   public static String toBraille(char letter) {
-    return ""; // STUB
-    // take the bits of letter
-    // follow the bits to the braille
-    // return braille
+    try {
+      a2bTree.load(new FileInputStream(a2bFile));
+    } catch (Exception FileNotFoundException) {
+    } // try/catch
+    String ltr = new String(letter + "");
+    byte[] bits = ltr.getBytes();
+    String bitsStr = bits.toString();
+    try {
+      return a2bTree.get(bitsStr);
+    } catch (Exception exception) {
+    } // try/catch
+    return "";
   } // toBraille(char)
 
   /**
-   * Converts a bit string representation of a Braille character to the corresponding ASCII character.
+   * Converts a bit string representation of a Braille character to the corresponding ASCII
+   * character.
    *
    * @param bits a string of 6 bits representing a Braille character
    * @return the corresponding ASCII character
@@ -126,7 +153,8 @@ public class BrailleAsciiTables {
   } // toAscii(String)
 
   /**
-   * Converts a bit string representation of a Braille character to the corresponding Unicode symbol.
+   * Converts a bit string representation of a Braille character to the corresponding Unicode
+   * symbol.
    *
    * @param bits a string of 6 bits representing a Braille character
    * @return the corresponding Unicode character

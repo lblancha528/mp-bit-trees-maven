@@ -1,6 +1,9 @@
 package edu.grinnell.csc207.util;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
 /**
@@ -88,6 +91,23 @@ public class BitTree {
     return node.getVal();
   } // helperSet(BitTreeNode, String, String)
 
+  /**
+   * Recurses over the tree to retrieve each leaf.
+   * 
+   * @param bitsSoFar a string of the bit path needed to reach the current node
+   * @param node the node we start recursing from
+   * @param pen to print
+   */
+  public void helperDump(String bitsSoFar, BitTreeNode node, PrintWriter pen) {
+    if (node instanceof BitTreeLeaf) {
+      pen.println(bitsSoFar + "," + node.getVal());
+      return;
+    } else {
+      helperDump(bitsSoFar + 0, node.getLeft(), pen);
+      helperDump(bitsSoFar + 1, node.getRight(), pen);
+    } // if
+  } // helperDump(String, BitTreeNode, PrintWriter)
+
   // +---------+-----------------------------------------------------
   // | Methods |
   // +---------+
@@ -128,8 +148,8 @@ public class BitTree {
    * @param pen to write with
    */
   public void dump(PrintWriter pen) {
-    // how to keep track of what bit string was used to get to this node?
-    // only print leaves
+    String bitsSoFar = new String("");
+    helperDump(bitsSoFar, this.root, pen);
   } // dump(PrintWriter)
 
   /**
@@ -138,9 +158,19 @@ public class BitTree {
    * @param source the table of paths and values
    */
   public void load(InputStream source) {
-    // parse one line from source
-    // split line at comma
-    // pass first half (bits) as bits and second half (value) as value
+    InputStreamReader isr = new InputStreamReader(source);
+    BufferedReader eyes = new BufferedReader(isr);
+
+    try {
+      String line = eyes.readLine();
+      while (line != null) {
+        String bits = line.split(",")[0];
+        String value = line.split(",")[1];
+        this.set(bits, value);
+        line = eyes.readLine();
+      } // while
+    } catch (Exception IOException) {
+    } // try/catch
   } // load(InputStream)
 
 } // class BitTree
