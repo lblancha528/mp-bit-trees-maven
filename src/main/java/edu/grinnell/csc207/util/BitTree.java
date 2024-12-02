@@ -164,9 +164,8 @@ public class BitTree {
     try {
       String line = eyes.readLine();
       while (line != null) {
-        String bits = line.split(",")[0];
-        String value = line.split(",")[1];
-        this.set(bits, value);
+        String[] parts = line.split(",");
+        set(parts[0], parts[1]);
         line = eyes.readLine();
       } // while
     } catch (Exception IOException) {

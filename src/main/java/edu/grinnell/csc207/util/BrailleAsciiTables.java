@@ -69,7 +69,7 @@ public class BrailleAsciiTables {
    * A 7/ 8 deep tree whose branches represent a bit string of an ASCII character and whose leaves
    * are a bit string of the corresponding Braille symbol.
    */
-  static BitTree a2bTree = new BitTree(7);
+  static BitTree a2bTree = null;
 
   /**
    * The file version of a2b.
@@ -80,7 +80,7 @@ public class BrailleAsciiTables {
    * A 6 deep tree whose branches represent a bit string Braille symbol and whole leaves are an
    * ASCII character.
    */
-  static BitTree b2aTree = new BitTree(6);
+  static BitTree b2aTree = null;
 
   /**
    * The file version of b2a.
@@ -91,7 +91,7 @@ public class BrailleAsciiTables {
    * A 6 deep tree whose branches represent a bit string Braille symbol and wholse leaves are the
    * corresponding Unicode symbol.
    */
-  static BitTree b2uTree = new BitTree(6);
+  static BitTree b2uTree = null;
 
   /**
    * The file version of b2u.
@@ -114,10 +114,18 @@ public class BrailleAsciiTables {
    * @return a bit string representation of the corresponding Braille character
    */
   public static String toBraille(char letter) {
-    try {
-      a2bTree.load(new FileInputStream(a2bFile));
-    } catch (Exception FileNotFoundException) {
-    } // try/catch
+    // Make sure we've loaded the braille-to-ASCII tree.
+    if (null == a2bTree) {
+      a2bTree = new BitTree(7);
+      InputStream a2bStream = new ByteArrayInputStream(a2b.getBytes());
+      a2bTree.load(a2bStream);
+      try {
+        a2bStream.close();
+      } catch (IOException e) {
+        // We don't care if we can't close the stream.
+      } // try/catch
+    } // if
+
     String ltr = new String(letter + "");
     byte[] bits = ltr.getBytes();
     String bitsStr = bits.toString();
@@ -147,9 +155,12 @@ public class BrailleAsciiTables {
         // We don't care if we can't close the stream.
       } // try/catch
     } // if
-    return ""; // STUB
-    // for each 6 chars (1 bit string), follow the bits to the char
-    // print char, no spaces
+
+    try {
+      return b2aTree.get(bits);
+    } catch (Exception exception) {
+    } // try/catch
+    return "";
   } // toAscii(String)
 
   /**
@@ -160,8 +171,22 @@ public class BrailleAsciiTables {
    * @return the corresponding Unicode character
    */
   public static String toUnicode(String bits) {
-    return ""; // STUB
-    // for each 6 chars (1 bit string), follow the bits to the unicode
-    // print unicode, no spaces
+    // Make sure we've loaded the braille-to-ASCII tree.
+    if (null == b2uTree) {
+      b2uTree = new BitTree(6);
+      InputStream b2uStream = new ByteArrayInputStream(b2u.getBytes());
+      b2aTree.load(b2uStream);
+      try {
+        b2uStream.close();
+      } catch (IOException e) {
+        // We don't care if we can't close the stream.
+      } // try/catch
+    } // if
+
+    try {
+      return b2uTree.get(bits);
+    } catch (Exception exception) {
+    } // try/catch
+    return "";
   } // toUnicode(String)
 } // BrailleAsciiTables

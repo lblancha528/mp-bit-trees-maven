@@ -28,8 +28,11 @@ This code may be found at <https://github.com/lblancha528/mp-bit-trees-maven>. T
 
 **Work Log**
 * 11/26/24      7:15-8:45pm     1.5hrs
-* 12/01/24      7:15-
+* 12/01/24      7:15-9:00pm     1.7hrs
+                9:40-10:00pm    0.5hrs
 
 **To Do**
-* Implement BrailleAsciiTables
+* set() not working?
+    * need to use height somewhere!
+    * never creating new nodes during set!
 * Do something with try/catches
