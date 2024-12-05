@@ -40,6 +40,7 @@ public class BitTree {
    */
   public BitTree(int n) {
     this.root = new BitTreeBranch();
+    this.root.setVal("0");
     this.height = n;
     this.size = 0;
     this.cache = null;
@@ -59,7 +60,6 @@ public class BitTree {
    * @return the node that was set
    */
   public BitTreeNode helperSet(BitTreeNode node, String bits, String value, int depth) {
-    PrintWriter pen = new PrintWriter(System.out, true);
     if (depth == this.height) {
       if (node.getVal() == null) {
         size++;
@@ -70,6 +70,7 @@ public class BitTree {
         if (node.getLeft() == null && bits.length() > 1) {
           // if no node to left and not at row above leaves, make branch
           node.setLeft(new BitTreeBranch());
+          node.getLeft().setVal("0");
         } else if (node.getLeft() == null && bits.length() == 1) {
           // if no node to left and moving to leaves, make leaf
           node.setLeft(new BitTreeLeaf());
@@ -80,6 +81,7 @@ public class BitTree {
         if (node.getRight() == null && bits.length() > 1) {
           // if no node to right and not at row above leaves, make branch
           node.setRight(new BitTreeBranch());
+          node.getLeft().setVal("1");
         } else if (node.getRight() == null && bits.length() == 1) {
           // if no node to right and moving to leaves, make leaf
           node.setRight(new BitTreeLeaf());

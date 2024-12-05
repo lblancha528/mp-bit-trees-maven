@@ -28,11 +28,13 @@ To enscribe a Braille bit string to ASCII characters, provide the CLAs 'ascii' a
 This code may be found at <https://github.com/lblancha528/mp-bit-trees-maven>. The original code may be found at <https://github.com/Grinnell-CSC207/mp-bit-trees-maven>.
 
 **Work Log**
-* 11/26/24      7:15-8:45pm     1.5hrs
-* 12/01/24      7:15-9:00pm     1.7hrs
-                9:40-10:00pm    0.5hrs
-* 12/04/24      9:00-10:30pm    1.5hrs
+* 11/26/24      07:15-08:45pm       1.5hrs
+* 12/01/24      07:15-09:00pm       1.7hrs
+                09:40-10:00pm       0.5hrs
+* 12/04/24      09:00-10:30pm       1.5hrs
+* 12/05/24      10:00-10:30am       0.5hrs
 
 **To Do**
 * Do something with try/catches
-* brailleFindHelper triggeres toBraille try/catch ??
+* broke b2a
+* a2b always errors

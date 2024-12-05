@@ -103,27 +103,6 @@ public class BrailleAsciiTables {
   // | Static helper methods |
   // +-----------------------+
 
-  /**
-   * Helper to search the tree for the provided value.
-   * @param letter to search for
-   * @param node to start from
-   * @param path a string of the path travelled to get to node
-   * @return a string of the bit path taken to get to that point
-   */
-  static String brailleFindHelper(char letter, BitTreeNode node, String path) {
-    if (node.getVal().charAt(0) == letter) {
-      return path;
-    } else {
-      if (node.getLeft() != null) {
-        return brailleFindHelper(letter, node.getLeft(), path + 0);
-      } // if left child exists, look there
-      if (node.getRight() != null) {
-        return brailleFindHelper(letter, node.getRight(), path + 1);
-      } // if right child exists, look there
-    } // if
-    return "";
-  } // brailleFindHelper(char, BitTreeNode, String)
-
   // +----------------+----------------------------------------------
   // | Static methods |
   // +----------------+
@@ -137,7 +116,7 @@ public class BrailleAsciiTables {
   public static String toBraille(char letter) {
     // Make sure we've loaded the braille-to-ASCII tree.
     if (null == a2bTree) {
-      a2bTree = new BitTree(7);
+      a2bTree = new BitTree(8);
       InputStream a2bStream = new ByteArrayInputStream(a2b.getBytes());
       a2bTree.load(a2bStream);
       try {
@@ -147,12 +126,14 @@ public class BrailleAsciiTables {
       } // try/catch
     } // if
 
+    String ltr = letter + "";
+    byte[] bytes = ltr.getBytes();
+    String bit = bytes.toString();
     try {
-      return brailleFindHelper(letter, a2bTree.root, "");
-    } catch (Exception exception) {
+      return a2bTree.get(bit);
+    } catch (Exception e) {
       return "error";
-    } // try/catch
-    //return "";
+    } // try/catch 
   } // toBraille(char)
 
   /**
