@@ -103,6 +103,27 @@ public class BrailleAsciiTables {
   // | Static helper methods |
   // +-----------------------+
 
+  /**
+   * Helper to search the tree for the provided value.
+   * @param letter to search for
+   * @param node to start from
+   * @param path a string of the path travelled to get to node
+   * @return a string of the bit path taken to get to that point
+   */
+  static String brailleFindHelper(char letter, BitTreeNode node, String path) {
+    if (node.getVal().charAt(0) == letter) {
+      return path;
+    } else {
+      if (node.getLeft() != null) {
+        return brailleFindHelper(letter, node.getLeft(), path + 0);
+      } // if left child exists, look there
+      if (node.getRight() != null) {
+        return brailleFindHelper(letter, node.getRight(), path + 1);
+      } // if right child exists, look there
+    } // if
+    return "";
+  } // brailleFindHelper(char, BitTreeNode, String)
+
   // +----------------+----------------------------------------------
   // | Static methods |
   // +----------------+
@@ -126,14 +147,12 @@ public class BrailleAsciiTables {
       } // try/catch
     } // if
 
-    String ltr = new String(letter + "");
-    byte[] bits = ltr.getBytes();
-    String bitsStr = bits.toString();
     try {
-      return a2bTree.get(bitsStr);
+      return brailleFindHelper(letter, a2bTree.root, "");
     } catch (Exception exception) {
+      return "error";
     } // try/catch
-    return "";
+    //return "";
   } // toBraille(char)
 
   /**
@@ -175,7 +194,7 @@ public class BrailleAsciiTables {
     if (null == b2uTree) {
       b2uTree = new BitTree(6);
       InputStream b2uStream = new ByteArrayInputStream(b2u.getBytes());
-      b2aTree.load(b2uStream);
+      b2uTree.load(b2uStream);
       try {
         b2uStream.close();
       } catch (IOException e) {
@@ -184,7 +203,8 @@ public class BrailleAsciiTables {
     } // if
 
     try {
-      return b2uTree.get(bits);
+
+      return new String(Character.toChars(Integer.valueOf(b2uTree.get(bits), 16)));
     } catch (Exception exception) {
     } // try/catch
     return "";

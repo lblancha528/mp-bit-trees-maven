@@ -55,21 +55,41 @@ public class BitTree {
    * @param node the node to start at
    * @param bits the path to follow
    * @param value the value to set
+   * @param depth the current depth
    * @return the node that was set
    */
-  public BitTreeNode helperSet(BitTreeNode node, String bits, String value) {
-    if (node instanceof BitTreeLeaf) {
+  public BitTreeNode helperSet(BitTreeNode node, String bits, String value, int depth) {
+    PrintWriter pen = new PrintWriter(System.out, true);
+    if (depth == this.height) {
+      if (node.getVal() == null) {
+        size++;
+      } // if setting new value
       node.setVal(value);
-      size++;
     } else {
-      if (bits.charAt(0) == 0) {
-        node.setLeft(helperSet(node.getLeft(), bits.substring(1), value));
-      } else if (bits.charAt(0) == 1) {
-        node.setRight(helperSet(node.getRight(), bits.substring(1), value));
+      if (bits.charAt(0) == '0') {
+        if (node.getLeft() == null && bits.length() > 1) {
+          // if no node to left and not at row above leaves, make branch
+          node.setLeft(new BitTreeBranch());
+        } else if (node.getLeft() == null && bits.length() == 1) {
+          // if no node to left and moving to leaves, make leaf
+          node.setLeft(new BitTreeLeaf());
+        } // if
+        // recurse
+        node.setLeft(helperSet(node.getLeft(), bits.substring(1), value, depth + 1));
+      } else if (bits.charAt(0) == '1') {
+        if (node.getRight() == null && bits.length() > 1) {
+          // if no node to right and not at row above leaves, make branch
+          node.setRight(new BitTreeBranch());
+        } else if (node.getRight() == null && bits.length() == 1) {
+          // if no node to right and moving to leaves, make leaf
+          node.setRight(new BitTreeLeaf());
+        } // if
+        // recurse
+        node.setRight(helperSet(node.getRight(), bits.substring(1), value, depth + 1));
       } // if
     } // if
     return node;
-  } // helperSet(BitTreeNode, String, String)
+  } // helperSet(BitTreeNode, String, String, int)
 
   /**
    * Recurses over the tree to get the value at the correct spot.
@@ -82,13 +102,13 @@ public class BitTree {
     if (node instanceof BitTreeLeaf) {
       return node.getVal();
     } else {
-      if (bits.charAt(0) == 0) {
-        helperGet(node.getLeft(), bits.substring(1));
-      } else if (bits.charAt(0) == 1) {
-        helperGet(node.getRight(), bits.substring(1));
+      if (bits.charAt(0) == '0') {
+        return helperGet(node.getLeft(), bits.substring(1));
+      } else if (bits.charAt(0) == '1') {
+        return helperGet(node.getRight(), bits.substring(1));
       } // if
     } // if
-    return node.getVal();
+    return "";
   } // helperSet(BitTreeNode, String, String)
 
   /**
@@ -119,9 +139,9 @@ public class BitTree {
    * @param value the value to set at the node found
    */
   public void set(String bits, String value) throws Exception {
-    if (bits.length() == 6 || bits.matches("[01]+")) {
+    if (bits.length() == this.height && bits.matches("[01]+")) {
       // if bits is appropriate length and has only 0 and 1 characters
-      this.root = helperSet(this.root, bits, value);
+      this.root = helperSet(this.root, bits, value, 0);
     } else {
       throw new Exception("Invalid bit string.");
     } // if
@@ -134,7 +154,7 @@ public class BitTree {
    * @return the value at the found node, as a string
    */
   public String get(String bits) throws Exception {
-    if (bits.length() == 6 || bits.matches("[01]+")) {
+    if (bits.length() == this.height && bits.matches("[01]+")) {
       // if bits is appropriate length and has only 0 and 1 characters
       return helperGet(this.root, bits);
     } else {

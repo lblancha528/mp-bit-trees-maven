@@ -13,7 +13,8 @@ A mini-project exploring bit trees (a form of binary tree) and their use in tran
 * 11/26/24 Evening tutors: Avaash and Ishita
 * 11/26/24 How to recurse over trees, lab-bsts-maven, partner Leo
 * 12/1/24  Evening tutors: Ethan
-*
+* 12/4/24  Evening tutors: Audrey, Boston
+            Tree Traversal lab, partner AJ, how to do depth first tree traversal
 
 **Instructions for use**
 
@@ -30,9 +31,8 @@ This code may be found at <https://github.com/lblancha528/mp-bit-trees-maven>. T
 * 11/26/24      7:15-8:45pm     1.5hrs
 * 12/01/24      7:15-9:00pm     1.7hrs
                 9:40-10:00pm    0.5hrs
+* 12/04/24      9:00-10:30pm    1.5hrs
 
 **To Do**
-* set() not working?
-    * need to use height somewhere!
-    * never creating new nodes during set!
 * Do something with try/catches
+* brailleFindHelper triggeres toBraille try/catch ??
