@@ -15,6 +15,7 @@ A mini-project exploring bit trees (a form of binary tree) and their use in tran
 * 12/1/24  Evening tutors: Ethan
 * 12/4/24  Evening tutors: Audrey, Boston
             Tree Traversal lab, partner AJ, how to do depth first tree traversal
+* 12/5/24  Evening tutors: Charles, Boston
 
 **Instructions for use**
 
@@ -33,8 +34,8 @@ This code may be found at <https://github.com/lblancha528/mp-bit-trees-maven>. T
                 09:40-10:00pm       0.5hrs
 * 12/04/24      09:00-10:30pm       1.5hrs
 * 12/05/24      10:00-10:30am       0.5hrs
+                09:10-10:20pm       1.1hrs
 
 **To Do**
 * Do something with try/catches
-* broke b2a
 * a2b always errors

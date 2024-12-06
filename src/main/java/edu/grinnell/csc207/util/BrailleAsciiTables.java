@@ -4,10 +4,11 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.io.IOException;
 
 /**
- *
+ * Methods that build the conversion trees and format inputs to be converted.
  *
  * @author Lily Blanchard
  * @author Samuel A. Rebelsky
@@ -72,32 +73,16 @@ public class BrailleAsciiTables {
   static BitTree a2bTree = null;
 
   /**
-   * The file version of a2b.
-   */
-  static File a2bFile = new File("src/main/java/edu/grinnell/csc207/util/a2bFile.txt");
-
-  /**
    * A 6 deep tree whose branches represent a bit string Braille symbol and whole leaves are an
    * ASCII character.
    */
   static BitTree b2aTree = null;
 
   /**
-   * The file version of b2a.
-   */
-  static File b2aFile = new File("src/main/java/edu/grinnell/csc207/util/b2aFile.txt");
-
-  /**
    * A 6 deep tree whose branches represent a bit string Braille symbol and wholse leaves are the
    * corresponding Unicode symbol.
    */
   static BitTree b2uTree = null;
-
-  /**
-   * The file version of b2u.
-   */
-  static File b2uFile = new File("src/main/java/edu/grinnell/csc207/util/b2uFile.txt");
-
 
   // +-----------------------+---------------------------------------
   // | Static helper methods |
@@ -115,10 +100,11 @@ public class BrailleAsciiTables {
    */
   public static String toBraille(char letter) {
     // Make sure we've loaded the braille-to-ASCII tree.
-    if (null == a2bTree) {
-      a2bTree = new BitTree(8);
+    if (a2bTree == null) {
+      a2bTree = new BitTree(7);
       InputStream a2bStream = new ByteArrayInputStream(a2b.getBytes());
       a2bTree.load(a2bStream);
+      a2bTree.dump(new PrintWriter(System.out, true));
       try {
         a2bStream.close();
       } catch (IOException e) {
@@ -126,14 +112,18 @@ public class BrailleAsciiTables {
       } // try/catch
     } // if
 
-    String ltr = letter + "";
-    byte[] bytes = ltr.getBytes();
-    String bit = bytes.toString();
+    Integer ltr = Character.getNumericValue(letter);
+    String bits = Integer.toBinaryString(ltr);
+    while (bits.length() < 7) {
+      bits = "0" + bits;
+    } // while, put 0 at beginning to be long enough
+    System.out.println(bits + bits.length());
+    a2bTree.dump(new PrintWriter(System.out, true));
     try {
-      return a2bTree.get(bit);
+      return a2bTree.get(bits);
     } catch (Exception e) {
-      return "error";
-    } // try/catch 
+      return e + "";
+    } // try/catch
   } // toBraille(char)
 
   /**
