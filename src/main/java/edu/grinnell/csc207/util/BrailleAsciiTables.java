@@ -101,10 +101,9 @@ public class BrailleAsciiTables {
   public static String toBraille(char letter) {
     // Make sure we've loaded the braille-to-ASCII tree.
     if (a2bTree == null) {
-      a2bTree = new BitTree(7);
+      a2bTree = new BitTree(8);
       InputStream a2bStream = new ByteArrayInputStream(a2b.getBytes());
       a2bTree.load(a2bStream);
-      a2bTree.dump(new PrintWriter(System.out, true));
       try {
         a2bStream.close();
       } catch (IOException e) {
@@ -112,13 +111,10 @@ public class BrailleAsciiTables {
       } // try/catch
     } // if
 
-    Integer ltr = Character.getNumericValue(letter);
-    String bits = Integer.toBinaryString(ltr);
-    while (bits.length() < 7) {
-      bits = "0" + bits;
-    } // while, put 0 at beginning to be long enough
-    System.out.println(bits + bits.length());
-    a2bTree.dump(new PrintWriter(System.out, true));
+    String bits = Integer.toBinaryString((int) letter);
+    while (bits.length() < 8) {
+      bits = 0 + bits;
+    } // pad front
     try {
       return a2bTree.get(bits);
     } catch (Exception e) {

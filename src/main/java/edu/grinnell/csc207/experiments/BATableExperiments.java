@@ -28,7 +28,7 @@ public class BATableExperiments {
 
     pen.println("ASCII -> Braille");
     pen.println("----------------");
-    for (char letter = 'A'; letter <= 'Z'; ++letter) {
+    for (char letter = 'a'; letter <= 'z'; ++letter) {
       try {
         pen.println(letter + " -> " + BrailleAsciiTables.toBraille(letter));
       } catch (Exception e) {

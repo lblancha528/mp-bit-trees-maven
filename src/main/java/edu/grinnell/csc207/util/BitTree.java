@@ -60,7 +60,6 @@ public class BitTree {
    */
   public BitTreeNode helperSet(BitTreeNode node, String bits, String value, int depth) {
     if (depth == this.height) {
-      System.out.println("depth");
       if (node.getVal() == null) {
         size++;
       } // if setting new value
